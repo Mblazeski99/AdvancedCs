@@ -48,6 +48,7 @@
     <Compile Include="Enums\PartType.cs" />
     <Compile Include="Items\AppUi.cs" />
     <Compile Include="Items\Configuration.cs" />
+    <Compile Include="Items\InvalidInputException.cs" />
     <Compile Include="Items\Item.cs" />
     <Compile Include="Items\Module.cs" />
     <Compile Include="Items\Part.cs" />

@@ -131,12 +131,7 @@ namespace App.Items
                                 Console.ReadKey();
                             }
                         }
-                        else
-                        {
-                            Console.WriteLine("INVALID INPUT!!!");
-                            Console.ReadKey();
-                            WelcomePage();
-                        }                       
+                        else throw new InvalidInputException();
                         break;
                     case 2:
                         if (answer > 0 && answer <= outputModules.Count)
@@ -148,12 +143,7 @@ namespace App.Items
                                 Console.ReadKey();
                             }
                         }
-                        else
-                        {
-                            Console.WriteLine("INVALID INPUT!!!");
-                            Console.ReadKey();
-                            WelcomePage();
-                        }
+                        else throw new InvalidInputException();
                         break;
                     case 3:
                         if (answer > 0 && answer <= outputConfigs.Count)
@@ -165,12 +155,7 @@ namespace App.Items
                                 Console.ReadKey();
                             }                                
                         }
-                        else
-                        {
-                            Console.WriteLine("INVALID INPUT!!!");
-                            Console.ReadKey();
-                            WelcomePage();
-                        }
+                        else throw new InvalidInputException();
                         break;
                 }
                 Console.Clear();
@@ -224,12 +209,7 @@ namespace App.Items
                 }
 
             }
-            else
-            {
-                Console.WriteLine("INVALID INPUT!!!");
-                Console.ReadKey();
-                WelcomePage();
-            }               
+            else throw new InvalidInputException();
         }
         #endregion
 
@@ -280,12 +260,7 @@ namespace App.Items
                                             ShowParts(Program.Db.Parts.Where(x => x.Price >= min && x.Price <= max));
                                             AddToCart(1);
                                         }
-                                        else
-                                        {
-                                            Console.WriteLine("INVALID INPUT!!!");
-                                            Console.ReadKey();
-                                            WelcomePage();
-                                        }
+                                        else throw new InvalidInputException();
                                     }
                                     else
                                     {
@@ -318,9 +293,7 @@ namespace App.Items
                                             ShowParts(Program.Db.Parts.Where(x => x.Type == PartType.Monitor || x.Type == PartType.Mouse || x.Type == PartType.Keyboard));
                                             break;
                                         default:
-                                            Console.WriteLine("INVALID INPUT!!!");
-                                            Console.ReadKey();
-                                            WelcomePage();
+                                            throw new InvalidInputException();
                                             break;
                                     }
                                     AddToCart(1);
@@ -332,12 +305,7 @@ namespace App.Items
                                     break;
                             }
                         }
-                        else
-                        {
-                            Console.WriteLine("INVALID INPUT!!!");
-                            Console.ReadKey();
-                            WelcomePage();
-                        }
+                        else throw new InvalidInputException();
                         break;
                     case 2:                                                 // MODULES OPTIONS
                         Console.Clear();
@@ -366,12 +334,7 @@ namespace App.Items
                                             ShowModules(Program.Db.Modules.Where(x => x.Price >= min && x.Price <= max));
                                             AddToCart(2);
                                         }
-                                        else
-                                        {
-                                            Console.WriteLine("INVALID INPUT!");
-                                            Console.ReadKey();
-                                            WelcomePage();
-                                        }
+                                        else throw new InvalidInputException();
                                     }
                                     else
                                     {
@@ -404,9 +367,7 @@ namespace App.Items
                                             ShowModules(Program.Db.Modules.Where(x => x.Type == ModuleType.Other));
                                             break;
                                         default:
-                                            Console.WriteLine("INVALID INPUT!!!");
-                                            Console.ReadKey();
-                                            WelcomePage();
+                                            throw new InvalidInputException();
                                             break;
                                     }
                                     AddToCart(2);
@@ -418,12 +379,7 @@ namespace App.Items
                                     break;
                             }
                         }
-                        else
-                        {
-                            Console.WriteLine("INVALID INPUT!!!");
-                            Console.ReadKey();
-                            WelcomePage();
-                        }
+                        else throw new InvalidInputException();
                         break;
                     case 3:                                                    // CONFIGURATIONS OPTIONS
                         Console.Clear();
@@ -452,12 +408,7 @@ namespace App.Items
                                             ShowConfigurations(Program.Db.Configurations.Where(x => x.Price >= min && x.Price <= max));
                                             AddToCart(3);
                                         }
-                                        else
-                                        {
-                                            Console.WriteLine("INVALID INPUT!");
-                                            Console.ReadKey();
-                                            WelcomePage();
-                                        }
+                                        else throw new InvalidInputException();
                                     }
                                     else
                                     {
@@ -481,9 +432,7 @@ namespace App.Items
                                             ShowConfigurations(Program.Db.Configurations.Where(x => x.Type == ConfigurationType.Gaming));
                                             break;                                        
                                         default:
-                                            Console.WriteLine("INVALID INPUT!!!");
-                                            Console.ReadKey();
-                                            WelcomePage();
+                                            throw new InvalidInputException();
                                             break;
                                     }
                                     AddToCart(3);
@@ -495,12 +444,7 @@ namespace App.Items
                                     break;
                             }
                         }
-                        else
-                        {
-                            Console.WriteLine("INVALID INPUT!!!");
-                            Console.ReadKey();
-                            WelcomePage();
-                        }
+                        else throw new InvalidInputException();
                         break;
                     default:
                         Console.WriteLine("you need to choose a number between 1 and 3!");
@@ -509,24 +453,9 @@ namespace App.Items
                         break;
                 }
             }
-            else
-            {
-                Console.WriteLine("INVALID INPUT!!!");
-                Console.ReadKey();
-                WelcomePage();
-            }
+            else throw new InvalidInputException();
 
         }
         #endregion
-
-
-
-
-
-
-
-
-
-
     }
 }

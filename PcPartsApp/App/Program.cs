@@ -178,14 +178,31 @@ namespace App
 
         static void Main(string[] args) // start of main
         {
-            PopulateDb();    
+            PopulateDb();
 
+            bool stop = false;
+            char answer;
             AppUi ui = new AppUi();
-            ui.WelcomePage();
 
-
-
-
+            while(!stop)
+            {
+                try
+                {
+                    ui.WelcomePage();
+                }
+                catch (InvalidInputException ex)
+                {
+                    ex.PrintError();
+                    answer = Console.ReadKey().KeyChar;
+                    if (answer == 'Y' || answer == 'y') stop = false;
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("I'll take that as a no");
+                        stop = true;
+                    }
+                }
+            }          
             Console.ReadLine();
         } // end of main
     }
