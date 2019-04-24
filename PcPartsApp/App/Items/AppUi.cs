@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using App.Enums;
+using System.Threading;
 
 namespace App.Items
 {
@@ -14,6 +15,10 @@ namespace App.Items
         private int min;
         private int max;
         private double totalCost;
+        private int recieptChoice;
+        private bool sms = false;
+        private bool e_mail = false;
+        private bool mail = false;
         private List<Item> Cart;
         private List<Part> outputParts { get; set; }
         private List<Module> outputModules { get; set; }
@@ -93,26 +98,26 @@ namespace App.Items
                 {
                     foreach(Part dbPart in Program.Db.Parts)
                     {
-                        if (cartItem.Id == dbPart.Id) Console.WriteLine($"Part, ID: {dbPart.Id}, Name: {dbPart.Name}, Type: {dbPart.Type}, Company: {dbPart.Company}, Quantity: {dbPart.Quantity}, Price: {dbPart.Price}$, Warranty: {dbPart.Warranty}");
+                        if (cartItem.Id == dbPart.Id) Console.WriteLine($"Part, ID: {dbPart.Id}, Name: {dbPart.Name}, Type: {dbPart.Type}, Company: {dbPart.Company}, Quantity: {dbPart.Quantity}, Price(10% discount): {dbPart.Price - dbPart.Price / 10}$, Warranty: {dbPart.Warranty}");                           
                     }
                 }
                 else if (cartItem.Id > 49 && cartItem.Id < 61)
                 {
                     foreach (Module dbModule in Program.Db.Modules)
                     {
-                        if (cartItem.Id == dbModule.Id) Console.WriteLine($"Module, ID: {dbModule.Id}, Type: {dbModule.Type}, Price: {dbModule.Price}$");
+                        if (cartItem.Id == dbModule.Id) Console.WriteLine($"Module, ID: {dbModule.Id}, Type: {dbModule.Type}, Price(10% discount): {dbModule.Price - dbModule.Price / 10}$");
                     }
                 }
                 else if (cartItem.Id > 79 && cartItem.Id < 84)
                 {
                     foreach(Configuration dbConfig in Program.Db.Configurations)
                     {
-                        if (cartItem.Id == dbConfig.Id) Console.WriteLine($"Configuration, ID: {dbConfig.Id}, Title: {dbConfig.Title}, Type: {dbConfig.Type}, Price: {dbConfig.Price}$");
+                        if (cartItem.Id == dbConfig.Id) Console.WriteLine($"Configuration, ID: {dbConfig.Id}, Title: {dbConfig.Title}, Type: {dbConfig.Type}, Price(10% discount): {dbConfig.Price - dbConfig.Price / 10}$");
                     }
                 }
                 totalCost += cartItem.Price;
             }
-            Console.WriteLine($"Total Price: {totalCost}$");
+            Console.WriteLine($"Number of Items: {Cart.Count}, Total Price: {totalCost - totalCost / 10}$, Money saved with discount: {totalCost /10}$");
         }
 
         private void AddToCart(int itemTypeAnswer)
@@ -159,7 +164,7 @@ namespace App.Items
                         break;
                 }
                 Console.Clear();
-                Console.WriteLine($"The item: ID: {Cart.Last().Id} was added to your cart");
+                Console.WriteLine($"The item: ID: {Cart.Last().Id} was added to your cart, you currently have {Cart.Count} items in your cart");
 
                 Console.WriteLine("Select an Option:");
                 Console.WriteLine("1) Continue shopping");
@@ -203,13 +208,70 @@ namespace App.Items
                             break;
                         case 4:
                             Console.Clear();
-                            Console.WriteLine("--------------------------------------------------------COMING SOON-----------------------------------------------------");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("--------------------------------------------------------YOUR CART-------------------------------------------------------");
+                            SeeCart();
+                            Console.WriteLine("--------------------------------------------------------YOUR CART-------------------------------------------------------");
+                            Console.ResetColor();
+                            Console.WriteLine(@"Choose Transaction Option:
+1) SMS
+2) E-Mail
+3) Mail(Post)
+4) Continue");
+                            CheckOut();                      
+                            Console.ReadKey();
                             break;
                     }
                 }
-
             }
             else throw new InvalidInputException();
+        }
+
+        private void SendReciept()
+        {
+                Console.WriteLine("Processing Transaction...");
+                Thread.Sleep(3000);
+            if (sms) Console.WriteLine("A reciept of your purchase was sent to you through sms");
+            if (e_mail) Console.WriteLine("A reciept of your purchase was sent to you through e-mal");
+            if (mail) Console.WriteLine("A reciept of your purchase was sent to you through mail");
+            sms = false;
+            e_mail = false;
+            mail = false;
+            Cart = new List<Item>();
+            totalCost = 0;
+        }
+
+        private void CheckOut()
+        {
+            if(int.TryParse(Console.ReadLine(), out recieptChoice) && recieptChoice > 0 && recieptChoice < 5)
+            {
+                switch(recieptChoice)
+                {
+                    case 1:
+                        sms = true;
+                        Console.WriteLine("A reciept will be sent to you through email");
+                        CheckOut();
+                        break;
+                    case 2:
+                        e_mail = true;
+                        Console.WriteLine("A reciept will be sent to you through email");
+                        CheckOut();
+                        break;
+                    case 3:
+                        mail = true;
+                        Console.WriteLine("A reciept will be sent to you through email");
+                        CheckOut();
+                        break;
+                    case 4:
+                        if (sms || e_mail || mail) SendReciept();
+                        else
+                        {
+                            Console.WriteLine("You have to choose one of the above options");
+                            CheckOut();
+                        }
+                        break;
+                }
+            }
         }
         #endregion
 
